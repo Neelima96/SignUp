@@ -24,3 +24,17 @@ function Signup(userName){
 
 }
 console.log(Signup("Vinni"));
+
+function login(userName, password) {
+    let users = ["neelima", "ram", "sita", "john"]; // existing users
+
+    if (!users.includes(userName)) {
+        return "User Not Found, Please Signup";
+    }
+
+    if (password === "Emp@123") {
+        return "Login Successful...";
+    } else {
+        return "Wrong Password....";
+    }
+}
