@@ -1,0 +1,136 @@
+<head>
+    <style>
+        *{
+            background-color: blanchedalmond;
+        }
+        div{
+            display: grid;
+            justify-content: center;
+        }
+        #grid{
+            display: grid;
+            grid-template-columns: repeat(3,1fr);
+            gap: 20px;
+            padding: 20px;
+        }
+        .card{
+            background-color: cornflowerblue;
+            padding: 20px;
+            border: 1px solid black;
+            border-radius: 15px;
+        }
+        img{
+            width: 70%;
+            height: 80%;
+        }
+    </style>
+</head>
+
+
+<body>
+    <div>
+        <input type="text" id="vehicleNo" placeholder="enter vehicleNo" required>
+        <input type="text" id="drivername" placeholder="enter driver name" required>
+        <select id="category">
+            <option value="Auto">Auto</option><br>
+            <option value="Car">Car</option><br>
+            <option value="Truck">Truck</option><br>
+            <option value="Bus">Bus</option>
+        </select>
+        <select id="availability">
+            <option value="Available">Available</option>
+            <option value="Unavailable">Unavailable</option>
+        </select>
+        <button type="button" onclick="addFleet()">Add Fleet</button>
+    </div>
+
+    <navbar>
+        <select id="categoryFilter" onchange="CategoryFilter()">
+            <option value="All">ALL</option>
+            <option value="Auto">Auto</option>
+            <option value="Car">Car</option>
+            <option value="Truck">Truck</option>
+            <option value="Bus">Bus</option>
+        </select>
+        <select id="AvailabilityFilter" onchange="AvailabilityFilter()">
+            <option value="All">ALL</option>
+            <option value="Available">Available</option>
+            <option value="Unavailable">Unavailable</option>
+        </select>
+    </navbar>
+
+    <div id="grid"></div>
+
+    <script>
+        let vehicleArray=[];
+        function addFleet()
+        {
+            const no = document.getElementById("vehicleNo").value.trim();
+            const name = document.getElementById("drivername").value.trim();
+            const transport = document.getElementById("category").value;
+            const available=document.getElementById("availability").value;
+
+            let vehicleObj={
+                no,
+                name,
+                transport,
+                available
+            };
+
+            vehicleArray.push(vehicleObj);
+            renderVehicle(vehicleArray);
+        }
+
+        function renderVehicle(data){
+            const grid = document.getElementById("grid");
+            grid.innerHTML="";
+
+            data.forEach((v,i) => {
+                const card=document.createElement("div");
+                card.className="card";
+
+                card.innerHTML=`
+                    <h2>${v.no}</h2>
+                    <h3>${v.transport}</h3>
+                    <h1>${v.name}</h1>
+                    <h3>${v.available}</h3>
+                    <img src="https://coding-platform.s3.amazonaws.com/dev/lms/tickets/5e80fcb6-3f8e-480c-945b-30a5359eb40e/JNmYjkVr3WOjsrbu.png" alt="image">
+                    <button onclick="deletes()">Delete</button>
+                    <button onclick="changeAvailability()">Change Availability</button>
+                    <button onclick="UpdateDriver()">Update Driver</button>
+                `;
+                grid.appendChild(card);
+                
+            });            
+        }
+        function deletes(i){
+            vehicleArray.splice(i,1);
+            renderVehicle(vehicleArray);
+        }
+
+        function CategoryFilter(){
+            const filterValue = document.getElementById("categoryFilter").value;
+            if(filterValue==="All")
+            {
+                renderVehicle(vehicleArray);
+            }
+            else
+            {
+               const filtered= vehicleArray.filter(rec=>rec.CategoryFilter===filterValue);
+                renderVehicle(filteredVal);
+            }
+        }
+        function AvailabilityFilter(){
+            const filterValue = document.getElementById("AvailabilityFilter").value;
+            if(filterValue==="All")
+            {
+                renderVehicle(vehicleArray);
+            } 
+            else if(filterValue==="Available")
+            {
+                const filtered = vehicleArray.filter(rec => rec.AvailabilityFilter === "Available");
+                renderVehicle(filtered);
+            }
+        }
+    </script>
+</body>
